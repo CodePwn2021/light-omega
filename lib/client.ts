@@ -28,12 +28,12 @@ export class OmegaClient extends EventEmitter {
                     if(obj_message.violate) {
                         throw Error(JSON.stringify(obj_message))
                     }
-                    this.emit('omega.push', obj_message);
+                    this.emit('omega.response', obj_message);
                     return;
                 }
                 /** omega 主动推送数据包 **/
                 this.packetCount = obj_message.client;
-                this.emit('omega.response', obj_message);
+                this.emit('omega.push', obj_message);
             });
 
             /** 获取自己（机器人）的昵称 **/
@@ -63,6 +63,7 @@ export class OmegaClient extends EventEmitter {
 
     /** 发送一个数据包 **/
     async sendPacket(func: string, param: object): Promise<OmegaResponsePacket> {
+        if(!this.connected) throw Error('WebSocket not connected!!!\nPlease use sendPacket() in client.on("omega.ready") !!!');
         if(this.packetCount === 24011 || this.packetCount === 0) {
             this.packetCount = 1;
         } else {
@@ -96,14 +97,14 @@ export class OmegaClient extends EventEmitter {
 }
 
 /** 创建一个客户端 **/
-export function createClient(host?: string) {
+export function createClient(host?: string, level?: LogLevel) {
     let _host;
     if (host) {
         _host = `ws://${host}/omega_side`;
     } else {
         _host = DEFAULT_WS_URL;
     }
-    return new OmegaClient(_host);
+    return new OmegaClient(_host, level);
 }
 
 // define
