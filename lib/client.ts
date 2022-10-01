@@ -281,7 +281,7 @@ export type logLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal' |
 /** 数据包func名称 */
 export type packetFuncName =
     'echo'
-    | 'regMCPKt'
+    | 'regMCPkt'
     | 'reg_mc_packet'
     | 'query_packet_name'
     | 'send_ws_cmd'
