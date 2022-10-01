@@ -175,17 +175,36 @@ export class OmegaClient extends EventEmitter {
     }
 
     /**
-     * 获取一个玩家对象
-     * @function getPlayer
+     * 使用玩家昵称获取一个玩家对象
+     * @function getPlayerByName
      * @param {string} playerName 玩家昵称
      * @returns {Player}
      */
-    async getPlayer(playerName: string): Promise<Player> {
+    async getPlayerByName(playerName: string): Promise<Player> {
         const playerListPacket = await this.sendPacket('get_players_list', {});
         let targetIndex: number = 0;
         const isPlayerExists: boolean = playerListPacket.data.some((value: any, index: number) => {
             targetIndex = index;
             return playerName === value.name;
+        });
+        if (isPlayerExists) {
+            return new Player(this, playerListPacket.data[targetIndex]);
+        }
+        throw Error('Player NOT exists!!!');
+    }
+
+    /**
+     * 使用UUID获取一个玩家对象
+     * @function getPlayerByUUID
+     * @param {string} UUID 玩家UUID
+     * @returns {Player}
+     */
+    async getPlayerByUUID(UUID: string): Promise<Player> {
+        const playerListPacket = await this.sendPacket('get_players_list', {});
+        let targetIndex: number = 0;
+        const isPlayerExists: boolean = playerListPacket.data.some((value: any, index: number) => {
+            targetIndex = index;
+            return UUID === value.uuid;
         });
         if (isPlayerExists) {
             return new Player(this, playerListPacket.data[targetIndex]);
