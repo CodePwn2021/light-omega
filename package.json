@@ -2,7 +2,7 @@
   "name": "light-omega",
   "author": "codepwn",
   "description": "Omega ws client in FastBuilder.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publish_time": "2022-10-01",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",
